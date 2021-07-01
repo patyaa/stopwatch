@@ -3,17 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.timer.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         tools:context=".MainActivity">
 
-        <Chronometer
+        <TextView
             android:id="@+id/timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.timer}"
             android:textSize="30sp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,28 +35,31 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.startTime()}"
             android:text="@string/start"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timer" />
-
+            app:layout_constraintTop_toTopOf="@+id/timer" />
         <Button
             android:id="@+id/stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stop"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{()->viewModel.stopTime()}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start"/>
         <Button
             android:id="@+id/reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reset"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{()->viewModel.resetTime()}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stop" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stop"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,30 +1,29 @@
 package com.example.timer
-import android.os.SystemClock
-import android.widget.Chronometer
-import androidx.databinding.DataBindingUtil
+
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlin.concurrent.timer
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel(){
-
-    private lateinit var ch: Chronometer
-    init {
-        //számláló elindítása
-        startTime()
-        //számláló megállítása
-        stopTime()
-        //számláló nullázása
-        resetTime()
-    }
+class MainViewModel : ViewModel() {
+    val timer = MutableLiveData<String>("0")
+    var job: Job? = null
     fun startTime() {
-        ch.start()
+         job = viewModelScope.launch {
+            repeat(10) {
+                timer.value = it.toString()
+                delay(1000)
+            }
+        }
     }
 
     fun stopTime() {
-        ch.stop()
+        job?.cancel()
     }
 
-    fun resetTime() {
-        ch.base = SystemClock.elapsedRealtime()
+    fun resetTime(){
+        timer.value = "0"
     }
 }
