@@ -10,12 +10,11 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
     val timer = MutableLiveData<String>("0")
     var job: Job? = null
-    fun startTime() {
-         job = viewModelScope.launch {
-            repeat(10) {
-                timer.value = it.toString()
-                delay(1000)
-            }
+    var timeCounter: Int = 0
+
+    private suspend fun forever(action: suspend () -> Unit) {
+        while (true) {
+            action.invoke()
         }
     }
 
@@ -23,7 +22,22 @@ class MainViewModel : ViewModel() {
         job?.cancel()
     }
 
-    fun resetTime(){
-        timer.value = "0"
+    fun startTime() {
+        job = viewModelScope.launch {
+            forever {
+                updateTimer()
+                delay(1000)
+                timeCounter += 1
+            }
+        }
+    }
+
+    fun resetTime() {
+        timeCounter = 0
+        updateTimer()
+    }
+
+    private fun updateTimer(){
+        timer.value = timeCounter.toString()
     }
 }
